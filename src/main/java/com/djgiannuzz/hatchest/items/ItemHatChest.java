@@ -1,5 +1,7 @@
 package com.djgiannuzz.hatchest.items;
 
+import java.util.List;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,12 +10,20 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 
+import org.lwjgl.input.Keyboard;
+
 import com.djgiannuzz.hatchest.HatChest;
 import com.djgiannuzz.hatchest.init.ModItems;
+import com.djgiannuzz.hatchest.utility.HCUtility;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -113,20 +123,62 @@ public class ItemHatChest extends ItemArmor
 		}
 		return null;
 	}
+	@Override
+	public void onArmorTick(World world, EntityPlayer player, ItemStack armor) 
+	{
+		super.onArmorTick(world, player, armor);
+		if(armor.stackTagCompound.hasKey("Coords"))
+		{
+			int[] coords = armor.stackTagCompound.getIntArray("Coords");
+			HCUtility.removeBlock(player.worldObj, coords[0], coords[1], coords[2]);
+			armor.stackTagCompound.removeTag("Coords");
+		}
+	}
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer playerEnt)
     {
-		System.out.println(itemStack.getItemDamage());
-		itemStack.setItemDamage(itemStack.getItemDamage()==1?0:1);
+//		System.out.println(itemStack.getItemDamage());
+//		itemStack.setItemDamage(itemStack.getItemDamage()==1?0:1);
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
+			HCUtility.printItemHatChest(itemStack);
+		
 		return itemStack;
     }
+	
+	
 	
 	@Override
 	public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_)
     {
         return false;
     }	
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+	{
+		if(!(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54)))
+			list.add("Press SHIFT to see the content.");
+		else
+		{
+			boolean hasItems = false;
+			TileEntityChest chest = new TileEntityChest();
+			chest.readFromNBT(stack.getTagCompound());
+			for(int i = 0; i<chest.getSizeInventory(); i++)
+			{
+				ItemStack itemStack = chest.getStackInSlot(i);
+				if(itemStack != null)
+				{
+					list.add(itemStack.stackSize + "x" + itemStack.getDisplayName());
+					hasItems = true;
+				}
+				
+			}
+			if(!hasItems)
+				list.add("Empty");
+		}
+	}
 }
 
 

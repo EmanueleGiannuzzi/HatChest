@@ -1,5 +1,8 @@
 package com.djgiannuzz.hatchest;
 
+import net.minecraftforge.common.MinecraftForge;
+
+import com.djgiannuzz.hatchest.handlers.HatChestEventHandler;
 import com.djgiannuzz.hatchest.init.ModItems;
 import com.djgiannuzz.hatchest.proxy.IProxy;
 
@@ -33,7 +36,7 @@ public class HatChest
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	 
+    	MinecraftForge.EVENT_BUS.register(new HatChestEventHandler());
     }
     
     @EventHandler
