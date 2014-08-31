@@ -1,0 +1,16 @@
+[
+{
+  "modid": "hatchest",
+  "name": "Hat Chest",
+  "description": "Move chest easly!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["DjGiannuzz"],
+  "credits": "MarcusKron for the idea.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
