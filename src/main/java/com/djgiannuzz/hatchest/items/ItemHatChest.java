@@ -31,11 +31,14 @@ public class ItemHatChest extends ItemArmor
 {
 	private static final ArmorMaterial HATCHESTARMOR = EnumHelper.addArmorMaterial("HATCHEST", 0, new int[] {2, 0, 0, 0}, 0);
 		
+	private final int MAX_TICK_BEFORE_DROP = 20 / 2;
+	private int tickBeforeDrop = MAX_TICK_BEFORE_DROP;
+	
 	public ItemHatChest() 
 	{
 		super(HATCHESTARMOR, 0, 0);
-		this.setCreativeTab(CreativeTabs.tabTools);
 		this.setUnlocalizedName("hatChest");
+		this.setCreativeTab(null);
 	}
 	
 	@Override
@@ -91,7 +94,6 @@ public class ItemHatChest extends ItemArmor
 			
 				if(type == 0)
 				{
-//					System.out.println("DAMAGE: " + this.getDamage(itemStack));
 					armorModel = HatChest.proxy.getHatArmorModel(this.getDamage(itemStack) == 1);
 				}
 				else
@@ -133,20 +135,24 @@ public class ItemHatChest extends ItemArmor
 			HCUtility.removeBlock(player.worldObj, coords[0], coords[1], coords[2]);
 			armor.stackTagCompound.removeTag("Coords");
 		}
-	}
-	
-	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer playerEnt)
-    {
-//		System.out.println(itemStack.getItemDamage());
-//		itemStack.setItemDamage(itemStack.getItemDamage()==1?0:1);
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
-			HCUtility.printItemHatChest(itemStack);
-		
-		return itemStack;
-    }
-	
-	
+		if(player.rotationPitch < (-20.0D) || player.rotationPitch > (20.0D) || player.isSprinting())
+		{
+			if(tickBeforeDrop > 0)
+			{
+				System.out.println("TICK: " + this.tickBeforeDrop);
+				tickBeforeDrop--;
+			}
+			else
+			{
+				HCUtility.dropChestContent(player, armor);
+				HCUtility.removePlayerHatChest(player);
+				this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
+			}
+		}
+		else
+			this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
+	}
 	
 	@Override
 	public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_)

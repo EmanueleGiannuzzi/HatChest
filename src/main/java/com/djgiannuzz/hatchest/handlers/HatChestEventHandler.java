@@ -1,4 +1,5 @@
 package com.djgiannuzz.hatchest.handlers;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -22,22 +23,30 @@ public class HatChestEventHandler
 //		System.out.println((event.world.isRemote?"CLIENT":"SERVER"));
 		if(event.action.equals(Action.RIGHT_CLICK_BLOCK) && event.entityPlayer.isSneaking())
 		{
-			if(HCUtility.hasPlayerHatChest(event.entityPlayer))
-			{
-				//TODO
-			}
-			else
-			{
-				TileEntity tileEntity = event.world.getTileEntity(event.x, event.y, event.z);
-				if(tileEntity != null && tileEntity instanceof TileEntityChest)
+			if(event.entityPlayer.getCurrentEquippedItem() == null)
+				if(HCUtility.hasPlayerHatChest(event.entityPlayer))
 				{
-					TileEntityChest chest = (TileEntityChest)tileEntity;
-					HCUtility.putChestOnPlayer(event.entityPlayer, chest, event.world, event.x, event.y, event.z);
-					
-	//				event.setCanceled(true);
-					
+					int[] mod = HCUtility.getSidePositionModifier(event.face);
+					if(Blocks.chest.canPlaceBlockAt(event.world, event.x + mod[0], event.y + mod[1], event.z + mod[2]))
+					{
+						event.world.setBlock(event.x + mod[0], event.y + mod[1], event.z + mod[2], Blocks.chest);
+						TileEntityChest chest = HCUtility.getTileEntityFromItemStack(event.entityPlayer.getCurrentArmor(3));
+						event.world.setTileEntity(event.x + mod[0], event.y + mod[1], event.z + mod[2], chest);
+						HCUtility.removePlayerHatChest(event.entityPlayer);
+					}
 				}
-			}
+				else
+				{
+					TileEntity tileEntity = event.world.getTileEntity(event.x, event.y, event.z);
+					if(tileEntity != null && tileEntity instanceof TileEntityChest)
+					{
+						TileEntityChest chest = (TileEntityChest)tileEntity;
+						HCUtility.putChestOnPlayer(event.entityPlayer, chest, event.world, event.x, event.y, event.z);
+						
+		//				event.setCanceled(true);
+						
+					}
+				}
 		}
 	}
 	

@@ -25,7 +25,7 @@ public class ModelHat extends ModelBiped
 		if(hasChest)
 		{
 			float offsetX = -8F;
-			float offsetY = -25.0F;
+			float offsetY = -24.0F;
 			float offsetZ = -8F;
 			
 			this.chestLid = (new ModelRenderer(this, 0, 16)).setTextureSize(textureWidth, textureHeight);
