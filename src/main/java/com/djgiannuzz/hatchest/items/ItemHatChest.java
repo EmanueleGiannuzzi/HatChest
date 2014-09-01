@@ -33,8 +33,8 @@ public class ItemHatChest extends ItemArmor
 {
 	private static final ArmorMaterial HATCHESTARMOR = EnumHelper.addArmorMaterial("HATCHEST", 0, new int[] {0, 0, 0, 0}, 0);
 		
-	private final int MAX_TICK_BEFORE_DROP = 20 / 2;
-	private int tickBeforeDrop = MAX_TICK_BEFORE_DROP;
+	private int tickBeforeDrop = ConfigHandler.dropDelay;
+	public int tickBeforeDropClient = ConfigHandler.dropDelay;
 	
 	public ItemHatChest() 
 	{
@@ -150,10 +150,13 @@ public class ItemHatChest extends ItemArmor
 		}
 		return null;
 	}
+	
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack armor) 
 	{
 		super.onArmorTick(world, player, armor);
+		
+		
 		if(armor.stackTagCompound.hasKey("Coords"))
 		{
 			int[] coords = armor.stackTagCompound.getIntArray("Coords");
@@ -161,23 +164,46 @@ public class ItemHatChest extends ItemArmor
 			armor.stackTagCompound.removeTag("Coords");
 		}
 		
-		if(ConfigHandler.balanceEnabled && FMLCommonHandler.instance().getEffectiveSide().isServer())
-			if(player.rotationPitch < (-20.0D) || player.rotationPitch > (20.0D) || player.isSprinting())
+		if(ConfigHandler.enableBalance)
+			if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 			{
-				if(tickBeforeDrop > 0)
+				if(this.canPlayerBringChest(player))
 				{
-//					System.out.println("TICK: " + this.tickBeforeDrop);
-					tickBeforeDrop--;
+					if(tickBeforeDrop > 0)
+					{
+						tickBeforeDrop--;
+					}
+					else
+					{
+						HCUtility.dropChestContent(player, armor);
+						HCUtility.removePlayerHatChest(player);
+						this.tickBeforeDrop = ConfigHandler.dropDelay;
+					}
 				}
 				else
-				{
-					HCUtility.dropChestContent(player, armor);
-					HCUtility.removePlayerHatChest(player);
-					this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
-				}
+					this.tickBeforeDrop = ConfigHandler.dropDelay;
 			}
 			else
-				this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
+			{
+				if(this.canPlayerBringChest(player))
+				{
+					if(tickBeforeDropClient > 0)
+					{
+						tickBeforeDropClient--;
+					}
+					else
+					{
+						this.tickBeforeDropClient = ConfigHandler.dropDelay;
+					}
+				}
+				else
+					this.tickBeforeDropClient = ConfigHandler.dropDelay;
+			}
+	}
+		
+	private boolean canPlayerBringChest(EntityPlayer player)
+	{
+		return (player.rotationPitch < (-HatChest.THRESHOLD) || player.rotationPitch >= (HatChest.THRESHOLD) || player.isSprinting() || player.isDead || player.isPlayerSleeping());
 	}
 	
 	@Override

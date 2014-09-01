@@ -14,7 +14,9 @@ public class ConfigHandler
 {
 	public static Configuration config;
 	
-	public static boolean balanceEnabled;
+	public static boolean enableBalance;
+	public static boolean enableBalanceHud;
+	public static int dropDelay;
 	
 	public static void init(File configFile)
 	{
@@ -29,7 +31,9 @@ public class ConfigHandler
 
 	private static void loadConfiguration()
 	{
-		balanceEnabled = config.getBoolean("enableBalance", config.CATEGORY_GENERAL, true, "If set to true you have to balance the chest on your head or the chest will fall.");
+		enableBalance = config.getBoolean("enableBalance", config.CATEGORY_GENERAL, true, "If set to true you have to balance the chest on your head or the chest will fall.");
+		enableBalanceHud = config.getBoolean("enableBalanceHud", config.CATEGORY_GENERAL, true, "If set to false the sidebars will not be displayed.");
+		dropDelay = config.getInt("chestDropDelay", config.CATEGORY_GENERAL, 15, 0, 200, "How many ticks(20 ticks = 1 second) must pass after the the player is looking at too low(or too high), before the the fall of the chest.");
 		
 		if(config.hasChanged())
 		{

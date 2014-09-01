@@ -1,7 +1,9 @@
 package com.djgiannuzz.hatchest;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.djgiannuzz.hatchest.gui.hud.HudBalance;
 import com.djgiannuzz.hatchest.handler.ConfigHandler;
 import com.djgiannuzz.hatchest.handler.HatChestEventHandler;
 import com.djgiannuzz.hatchest.init.ModItems;
@@ -22,6 +24,8 @@ public class HatChest
     public static final String MODID = "hatchest";
     public static final String NAME = "Hat Chest";
     public static final String VERSION = "1.0";
+    
+    public static final double THRESHOLD = 20;
     
     @Mod.Instance(MODID)
 	public static HatChest instance;
@@ -46,6 +50,7 @@ public class HatChest
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-    	 
+    	if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+    		MinecraftForge.EVENT_BUS.register(new HudBalance(Minecraft.getMinecraft()));
     }
 }
