@@ -1,8 +1,8 @@
 package com.djgiannuzz.hatchest.models;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -15,13 +15,13 @@ public class ModelHat extends ModelBiped
     public ModelRenderer chestBelow;
     /** The chest's knob in the chest model. */
     public ModelRenderer chestKnob;
-	
+    	
 	public ModelHat(float f, boolean hasChest)
 	{
 		super(f, 0, 64, 64);
 		textureWidth = 64;
 		textureHeight = 64;
-		
+				
 		if(hasChest)
 		{
 			float offsetX = -8F;

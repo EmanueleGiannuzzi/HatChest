@@ -88,7 +88,6 @@ public class ItemHatChest extends ItemArmor
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister iconRegister)
 	{
-		System.out.println(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
 		this.itemIcon = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
 	}
 
