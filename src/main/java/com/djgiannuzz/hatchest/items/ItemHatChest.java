@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import org.lwjgl.input.Keyboard;
 
 import com.djgiannuzz.hatchest.HatChest;
+import com.djgiannuzz.hatchest.handler.ConfigHandler;
 import com.djgiannuzz.hatchest.init.ModItems;
 import com.djgiannuzz.hatchest.utility.HCUtility;
 
@@ -135,23 +136,24 @@ public class ItemHatChest extends ItemArmor
 			HCUtility.removeBlock(player.worldObj, coords[0], coords[1], coords[2]);
 			armor.stackTagCompound.removeTag("Coords");
 		}
-		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
-		if(player.rotationPitch < (-20.0D) || player.rotationPitch > (20.0D) || player.isSprinting())
-		{
-			if(tickBeforeDrop > 0)
+		
+		if(ConfigHandler.balanceEnabled && FMLCommonHandler.instance().getEffectiveSide().isServer())
+			if(player.rotationPitch < (-20.0D) || player.rotationPitch > (20.0D) || player.isSprinting())
 			{
-				System.out.println("TICK: " + this.tickBeforeDrop);
-				tickBeforeDrop--;
+				if(tickBeforeDrop > 0)
+				{
+					System.out.println("TICK: " + this.tickBeforeDrop);
+					tickBeforeDrop--;
+				}
+				else
+				{
+					HCUtility.dropChestContent(player, armor);
+					HCUtility.removePlayerHatChest(player);
+					this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
+				}
 			}
 			else
-			{
-				HCUtility.dropChestContent(player, armor);
-				HCUtility.removePlayerHatChest(player);
 				this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
-			}
-		}
-		else
-			this.tickBeforeDrop = MAX_TICK_BEFORE_DROP;
 	}
 	
 	@Override

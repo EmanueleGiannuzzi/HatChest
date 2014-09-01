@@ -2,10 +2,12 @@ package com.djgiannuzz.hatchest;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import com.djgiannuzz.hatchest.handlers.HatChestEventHandler;
+import com.djgiannuzz.hatchest.handler.ConfigHandler;
+import com.djgiannuzz.hatchest.handler.HatChestEventHandler;
 import com.djgiannuzz.hatchest.init.ModItems;
 import com.djgiannuzz.hatchest.proxy.IProxy;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -13,13 +15,13 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = HatChest.MODID, name = HatChest.NAME, version = HatChest.VERSION)
+@Mod(modid = HatChest.MODID, name = HatChest.NAME, version = HatChest.VERSION, guiFactory = "com.djgiannuzz.hatchest.handler.HatChestGuiFactory")
 public class HatChest
 {
 	
     public static final String MODID = "hatchest";
-    public static final String NAME = "Hat Chest Mod";
-    public static final String VERSION = "Alpha 0.0.1";
+    public static final String NAME = "Hat Chest";
+    public static final String VERSION = "1.0";
     
     @Mod.Instance(MODID)
 	public static HatChest instance;
@@ -30,6 +32,8 @@ public class HatChest
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+    	ConfigHandler.init(event.getSuggestedConfigurationFile());
+    	FMLCommonHandler.instance().bus().register(new ConfigHandler());
     	ModItems.init();
     }
     

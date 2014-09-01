@@ -1,4 +1,4 @@
-package com.djgiannuzz.hatchest.handlers;
+package com.djgiannuzz.hatchest.handler;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -43,7 +43,7 @@ public class HatChestEventHandler
 						TileEntityChest chest = (TileEntityChest)tileEntity;
 						HCUtility.putChestOnPlayer(event.entityPlayer, chest, event.world, event.x, event.y, event.z);
 						
-		//				event.setCanceled(true);
+//						event.setCanceled(true);
 						
 					}
 				}
