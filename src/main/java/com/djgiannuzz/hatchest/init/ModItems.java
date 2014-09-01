@@ -1,12 +1,13 @@
 package com.djgiannuzz.hatchest.init;
 
+import net.minecraft.item.Item;
+
+import com.djgiannuzz.hatchest.HatChest;
 import com.djgiannuzz.hatchest.items.ItemHatChest;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
-import net.minecraft.item.Item;
-
+@GameRegistry.ObjectHolder(HatChest.MODID)
 public class ModItems 
 {
 	public static final Item hatChest = new ItemHatChest();
