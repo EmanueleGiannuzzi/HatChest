@@ -2,6 +2,7 @@ package com.djgiannuzz.hatchest.utility;
 
 import java.util.Random;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +15,6 @@ import net.minecraft.world.World;
 import com.djgiannuzz.hatchest.init.ModItems;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class HCUtility 
 {
@@ -117,7 +116,7 @@ public class HCUtility
 		}
 	}
 	
-	public static void dropChestContent(EntityPlayer player, ItemStack itemStack)
+	public static void dropChestContent(Entity entity, ItemStack itemStack)
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 		{
@@ -125,10 +124,10 @@ public class HCUtility
 			
 			if (tileEntity != null)
 	        {
-				double x = player.posX;
-				double y = player.posY + 1.5D;
-				double z = player.posZ;
-				World world = player.worldObj;
+				double x = entity.posX;
+				double y = entity.posY + 1.5D;
+				double z = entity.posZ;
+				World world = entity.worldObj;
 				Random random = new Random();
 	            
 				for (int i1 = 0; i1 < tileEntity.getSizeInventory() + 1; ++i1)
@@ -172,4 +171,6 @@ public class HCUtility
 		
 		}
 	}
+	
+	
 }

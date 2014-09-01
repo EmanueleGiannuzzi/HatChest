@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemHatChest extends ItemArmor
 {
-	private static final ArmorMaterial HATCHESTARMOR = EnumHelper.addArmorMaterial("HATCHEST", 0, new int[] {2, 0, 0, 0}, 0);
+	private static final ArmorMaterial HATCHESTARMOR = EnumHelper.addArmorMaterial("HATCHEST", 0, new int[] {0, 0, 0, 0}, 0);
 		
 	private final int MAX_TICK_BEFORE_DROP = 20 / 2;
 	private int tickBeforeDrop = MAX_TICK_BEFORE_DROP;
@@ -57,6 +58,30 @@ public class ItemHatChest extends ItemArmor
 	public String getUnwrappedUnlocalizedName(String unlocalizedName)
 	{
 		return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
+	}
+	
+	@Override
+	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    {
+        return false;
+    }
+	
+	@Override
+	public boolean onEntityItemUpdate(EntityItem entityItem)
+    {
+		HCUtility.dropChestContent(entityItem, entityItem.getEntityItem());
+		entityItem.setDead();
+        return false;
+    }
+	
+	public void onUpdate(ItemStack itemStack, World world, Entity entity, int slot, boolean p_77663_5_) 
+	{
+		if(entity instanceof EntityPlayer)
+		{
+			HCUtility.dropChestContent(entity, itemStack);
+			((EntityPlayer)entity).inventory.setInventorySlotContents(slot, null);
+		}
+		
 	}
 	
 	@Override
@@ -142,7 +167,7 @@ public class ItemHatChest extends ItemArmor
 			{
 				if(tickBeforeDrop > 0)
 				{
-					System.out.println("TICK: " + this.tickBeforeDrop);
+//					System.out.println("TICK: " + this.tickBeforeDrop);
 					tickBeforeDrop--;
 				}
 				else
