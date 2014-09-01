@@ -1,14 +1,11 @@
 package com.djgiannuzz.hatchest.models;
 
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelHat extends ModelBiped
 {
-	
     /** The chest lid in the chest's model. */
     public ModelRenderer chestLid ;
     /** The model of the bottom of the chest. */
