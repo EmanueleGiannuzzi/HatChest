@@ -23,7 +23,7 @@ public class HatChest
 	
     public static final String MODID = "hatchest";
     public static final String NAME = "Hat Chest";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.1";
     
     public static final double THRESHOLD = 20;
     
