@@ -160,7 +160,7 @@ public class ItemHatChest extends ItemArmor
 			armor.stackTagCompound.removeTag("Coords");
 		}
 		
-		if(ConfigHandler.enableBalance)
+		if(ConfigHandler.enableBalance && !player.isSneaking())
 			if(FMLCommonHandler.instance().getEffectiveSide().isServer())
 			{
 				if(this.canPlayerBringChest(player))
