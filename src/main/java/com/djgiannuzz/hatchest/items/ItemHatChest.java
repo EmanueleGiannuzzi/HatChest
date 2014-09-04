@@ -152,7 +152,6 @@ public class ItemHatChest extends ItemArmor
 	{
 		super.onArmorTick(world, player, armor);
 		
-		
 		if(armor.stackTagCompound.hasKey("Coords"))
 		{
 			int[] coords = armor.stackTagCompound.getIntArray("Coords");
@@ -171,6 +170,7 @@ public class ItemHatChest extends ItemArmor
 					}
 					else
 					{
+						world.playSoundAtEntity(player, HatChest.MODID + ":woodFall", 1, 1);
 						HCUtility.dropChestContent(player, armor);
 						HCUtility.removePlayerHatChest(player);
 						this.tickBeforeDrop = ConfigHandler.dropDelay;
