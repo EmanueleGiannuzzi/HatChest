@@ -23,9 +23,9 @@ public class HatChest
 	
     public static final String MODID = "hatchest";
     public static final String NAME = "Hat Chest";
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.2";
     
-    public static final double THRESHOLD = 20;
+    public static final double THRESHOLD = 20; //THRESHOLD IN DEGREES
     
     @Mod.Instance(MODID)
 	public static HatChest instance;
